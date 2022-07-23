@@ -1,5 +1,6 @@
+import * as core from "@actions/core";
 const links = [
-  "https://github.com/owncloud/ocis/issues/2768",
+  "https://github.com/owncloud/ocis/issues/4127",
   "https://github.com/owncloud/ocis/issues/4188",
 ];
 
@@ -14,5 +15,8 @@ links.forEach(async (link) => {
   const issueNumber = getIssueNumber(link);
   const fullApiURL = apiURL.urlWithoutIssueNumber + issueNumber;
   const state = await getIssueState(fullApiURL);
-  console.log(state);
+  // console.log(state);
+  if (state === "closed") {
+    core.setFailed(`Issue is already closed`);
+  }
 });
