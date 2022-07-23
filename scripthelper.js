@@ -20,3 +20,11 @@ export const getIssueState = (issueUrl) => {
       });
   });
 };
+
+// this function change the issue URL to github api URL
+export const getIssueNumber = (link) => {
+  // console.log(toBeChangeURL)
+  const regex = /\d+/g;
+  const issueNumber = link.match(regex);
+  return issueNumber[0];
+};
