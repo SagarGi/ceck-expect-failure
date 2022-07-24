@@ -1,4 +1,6 @@
 import fetch from "node-fetch";
+import fs from "fs";
+import parseMD from "parse-md";
 
 // this function returns state of an issue
 export const getIssueState = (issueUrl) => {
@@ -23,8 +25,15 @@ export const getIssueState = (issueUrl) => {
 
 // this function change the issue URL to github api URL
 export const getIssueNumber = (link) => {
-  // console.log(toBeChangeURL)
   const regex = /\d+/g;
   const issueNumber = link.match(regex);
   return issueNumber[0];
+};
+
+export const getAllAvailableGithubIssueLinks = (mdFile) => {
+  const fileContents = fs.readFileSync(mdFile, "utf8");
+  const { content } = parseMD(fileContents);
+  const regex = /https?:\/\/github\.com\/(?:[^\/\s]+\/)+(issues\/\d+)/g;
+  const issueLinkMatched = content.match(regex);
+  return issueLinkMatched;
 };
