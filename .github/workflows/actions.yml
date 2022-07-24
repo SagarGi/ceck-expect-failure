@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - name: Chekout code
       uses: actions/checkout@v3
@@ -25,3 +23,14 @@ jobs:
       
     - name: Run Script
       run: npm start
+
+    - name: Push notification to rocket.chat if the job failed
+      id: error-notification
+      if: ${{ failure() }}
+      uses: jadolg/rocketchat-notification-action@v1.0.1
+      with:
+        server: ${{ secrets.ROCKETCHAT_SERVER }}
+        message: Job Failed !! There might be some expected to failure issues that has been closed !!!!
+        user: ${{ secrets.ROCKETCHAT_USER }}
+        password: ${{ secrets.ROCKETCHAT_PASSWORD }}
+        channel: Test-Channel
