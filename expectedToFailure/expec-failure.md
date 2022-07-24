@@ -50,3 +50,4 @@ Synchronization features like etag propagation, setting mtime and locking files
 - [apiMain/checksums.feature:386](https://github.com/owncloud/core/blob/master/tests/acceptance/features/apiMain/checksums.feature#L386)
 
 #### [Webdav LOCK operations](https://github.com/owncloud/ocis/issues/1284)
+#### [User can move a file from a shared folder with role editor to shared folder with role viewer in Shares Jail](https://github.com/owncloud/ocis/issues/4192)

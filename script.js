@@ -4,20 +4,24 @@ import {
   getIssueState,
   getIssueNumber,
   getAllAvailableGithubIssueLinks,
+  getAllExpectedToFailureFiles
 } from "./scripthelper.js";
 const apiURL = {
   urlWithoutIssueNumberForOcis:
     "https://api.github.com/repos/owncloud/ocis/issues/",
 };
-const mdFiles = ["./expectedToFailure/expec-failure.md"];
 
-const ocisIssuesLink = getAllAvailableGithubIssueLinks(mdFiles[0]);
+const mdFiles = getAllExpectedToFailureFiles('./expectedToFailure')
 
-ocisIssuesLink.forEach(async (link) => {
-  const issueNumber = getIssueNumber(link);
-  const fullApiURL = apiURL.urlWithoutIssueNumberForOcis + issueNumber;
-  const state = await getIssueState(fullApiURL);
-  if (state === "closed") {
-    core.setFailed(`Issue is already closed`);
-  }
+mdFiles.forEach((mdFile) => {
+  const ocisIssuesLink = getAllAvailableGithubIssueLinks(mdFile);
+  ocisIssuesLink.forEach(async (link) => {
+    const issueNumber = getIssueNumber(link);
+    const fullApiURL = apiURL.urlWithoutIssueNumberForOcis + issueNumber;
+    const state = await getIssueState(fullApiURL);
+    if (state === "closed") {
+      core.setFailed("This ocis issue " + link + " has been closed. Please Open it and Update Expected to failure File");
+    }
+  });
 });
+

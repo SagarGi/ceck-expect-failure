@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 import fs from "fs";
 import parseMD from "parse-md";
+import path from 'path'
 
 // this function returns state of an issue
 export const getIssueState = (issueUrl) => {
@@ -14,7 +15,6 @@ export const getIssueState = (issueUrl) => {
     return response
       .json()
       .then((data) => {
-        // console.log(data);
         return data.state;
       })
       .catch((err) => {
@@ -37,3 +37,22 @@ export const getAllAvailableGithubIssueLinks = (mdFile) => {
   const issueLinkMatched = content.match(regex);
   return issueLinkMatched;
 };
+
+export const getAllExpectedToFailureFiles = (folderPath) => {
+  var files = fs.readdirSync(folderPath);
+  var result = [];
+  const extension = "md"
+  files.forEach(
+      function (file) {
+        var newbase = path.join(folderPath,file);
+        if ( fs.statSync(newbase).isDirectory() ){
+          result = findFileByExt(newbase,extension,fs.readdirSync(newbase),result);
+        } else             {
+          if ( file.substr(-1*(extension.length+1)) == '.' + extension ){
+            result.push(newbase);
+          }
+        }
+      }
+  )
+  return result;
+}
