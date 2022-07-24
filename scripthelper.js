@@ -9,7 +9,8 @@ export const getIssueState = (issueUrl) => {
     method: "GET",
     headers: {
       Accept: "application/vnd.github+json",
-      token: "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",
+      // done with personal github token
+      Authorization: "token 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"
     },
   }).then((response) => {
     return response

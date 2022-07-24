@@ -17,10 +17,12 @@ mdFiles.forEach((mdFile) => {
   const ocisIssuesLink = getAllAvailableGithubIssueLinks(mdFile);
   ocisIssuesLink.forEach(async (link) => {
     const issueNumber = getIssueNumber(link);
-    const fullApiURL = apiURL.urlWithoutIssueNumberForOcis + issueNumber;
-    const state = await getIssueState(fullApiURL);
-    if (state === "closed") {
-      core.setFailed("This ocis issue " + link + " has been closed. Please Open it and Update Expected to failure File");
+    if(link.includes('ocis/issues')){
+      const fullApiURL = apiURL.urlWithoutIssueNumberForOcis + issueNumber;
+      const state = await getIssueState(fullApiURL);
+      if (state === "closed") {
+        core.setFailed("This ocis issue " + link + " has been closed. Please Open it and Update Expected to failure File");
+      }
     }
   });
 });
