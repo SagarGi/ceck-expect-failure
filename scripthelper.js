@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import fs from "fs";
 import parseMD from "parse-md";
 import path from 'path'
@@ -34,24 +33,20 @@ export const getAllAvailableGithubIssueLinks = (mdFile) => {
   const fileContents = fs.readFileSync(mdFile, "utf8");
   const { content } = parseMD(fileContents);
   const regex = /https?:\/\/github\.com\/(?:[^\/\s]+\/)+(issues\/\d+)/g;
-  const issueLinkMatched = content.match(regex);
-  return issueLinkMatched;
+  return content.match(regex);
 };
 
 export const getAllExpectedToFailureFiles = (folderPath) => {
-  var files = fs.readdirSync(folderPath);
-  var result = [];
-  const extension = "md"
-  files.forEach(
+  let expectedToFailureFiles = [];
+  fs.readdirSync(folderPath).filter(function(file) {
+    if(file.indexOf(".md")>-1){
+      expectedToFailureFiles.push(file)
+    }
+  })
+  let result = [];
+  expectedToFailureFiles.forEach(
       function (file) {
-        var newbase = path.join(folderPath,file);
-        if ( fs.statSync(newbase).isDirectory() ){
-          result = findFileByExt(newbase,extension,fs.readdirSync(newbase),result);
-        } else             {
-          if ( file.substr(-1*(extension.length+1)) == '.' + extension ){
-            result.push(newbase);
-          }
-        }
+        result.push(path.join(folderPath,file));
       }
   )
   return result;
