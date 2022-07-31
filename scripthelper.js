@@ -2,29 +2,28 @@ import fetch from "node-fetch";
 import fs from "fs";
 import parseMD from "parse-md";
 import path from 'path'
+import axios from "axios";
 
 // this function returns state of an issue
-export const getIssueState = (issueUrl) => {
-  return fetch(issueUrl, {
-    method: "GET",
-    headers: {
-      Accept: "application/vnd.github+json",
-      // done with personal github token
-      Authorization: "token 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"
-    },
-  }).then((response) => {
-    return response
-      .json()
-      .then((data) => {
-        return data.state;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
+export const getIssueState = async (issueUrl) => {
+  try{
+    const response = await axios.get(issueUrl, {
+      headers: {
+        Accept: "application/vnd.github+json",
+        // done with personal GitHub token
+        Authorization: "token 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"
+      },
+    })
+    if(response !== null){
+      return response.data.state;
+    }
+  }
+  catch (err){
+    console.log(err)
+  }
 };
 
-// this function change the issue URL to github api URL
+// this function change the issue URL to GitHub api URL
 export const getIssueNumber = (link) => {
   const regex = /\d+/g;
   const issueNumber = link.match(regex);
