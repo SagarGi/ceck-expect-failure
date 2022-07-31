@@ -29,9 +29,9 @@ jobs:
         git clone https://github.com/owncloud/web.git
 
     - name: Check closed issue for ocis
-      run: |
-        PATH_TO_EXPECTED_TO_FAILURE=ocis/tests/acceptance npm start
-        PATH_TO_EXPECTED_TO_FAILURE=web/tests/acceptance npm start
+      env:
+        PATH_TO_EXPECTED_TO_FAILURE: ocis/tests/acceptance
+      run: npm start
 
     - name: Push notification to rocket.chat if the job failed
       id: error-notification
