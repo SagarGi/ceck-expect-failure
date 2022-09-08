@@ -23,15 +23,19 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Clone ocis and web
-      run: |
-        git clone https://github.com/owncloud/ocis.git
-        git clone https://github.com/owncloud/web.git
-
-    - name: Check closed issue for ocis
+    - name: Clone ocis and check closed issues
       env:
         PATH_TO_EXPECTED_TO_FAILURE: ocis/tests/acceptance
-      run: npm start
+      run: |
+        git clone https://github.com/owncloud/ocis.git
+        npm run start
+
+    - name: Clone web and check closed issues
+      env:
+        PATH_TO_EXPECTED_TO_FAILURE: web/tests/acceptance
+      run: |
+        git clone https://github.com/owncloud/web.git
+        npm run start
 
     - name: Push notification to rocket.chat if the job failed
       id: error-notification
