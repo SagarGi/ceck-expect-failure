@@ -21,7 +21,8 @@ mdFiles.forEach((mdFile) => {
       const fullApiURL = apiURL.githubBaseApiURL + endPoint;
       const state = await getIssueState(fullApiURL);
       if (state === "closed") {
-        core.setFailed("This ocis issue " + link + " has been closed. Please Open it and Update Expected to failure File");
+        // core.setFailed("This ocis issue " + link + " has been closed. Please Open it and Update Expected to failure File");
+          console.log('\x1b[43m', 'Warning !!' +  'his ocis issue' + link + ' has been closed. Please Open it and Update Expected to failure File')
       }
   });
 });
