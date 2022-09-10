@@ -65,6 +65,9 @@ export const notifyToRocketChat = async (serverURL, access_token, user_id, hasCl
     "channel": "Test-Channel",
     "text": (hasClosedIssue)? "Warning !!! There are some issue that has been closed but still in Expected to Failure" : "Bravo!!! All the expected to failures files are upto date."
 }
-  const response = await axios.post(serverURL, data, config);
-  console.log(response.data.success)
+  try {
+    await axios.post(serverURL, data, config);
+  } catch (error) {
+    console.error(error);
+  }
 }
