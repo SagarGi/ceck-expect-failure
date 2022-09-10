@@ -23,27 +23,24 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Clone ocis and check closed issues
+    - name: clone OCIS  and check closed issues
       env:
         PATH_TO_EXPECTED_TO_FAILURE: ocis/tests/acceptance
+        ROCKETCHAT_ACCESS_TOKEN: ${{ secrets.ROCKETCHAT_ACCESS_TOKEN }}
+        ROCKETCHAT_USER_ID: ${{ secrets.ROCKETCHAT_USER_ID }}
+        ROCKETCHAT_SERVER_URL: ${{ secrets.ROCKETCHAT_SERVER_URL }}
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
         git clone https://github.com/owncloud/ocis.git
         npm run start
 
-    - name: Clone web and check closed issues
+    - name: Clone WEB and check closed issues
       env:
         PATH_TO_EXPECTED_TO_FAILURE: web/tests/acceptance
+        ROCKETCHAT_ACCESS_TOKEN: ${{ secrets.ROCKETCHAT_ACCESS_TOKEN }}
+        ROCKETCHAT_USER_ID: ${{ secrets.ROCKETCHAT_USER_ID }}
+        ROCKETCHAT_SERVER_URL: ${{ secrets.ROCKETCHAT_SERVER_URL }}
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
         git clone https://github.com/owncloud/web.git
         npm run start
-
-    - name: Push notification to rocket.chat if the job failed
-      id: error-notification
-      if: ${{ failure() }}
-      uses: jadolg/rocketchat-notification-action@v1.0.1
-      with:
-        server: ${{ secrets.ROCKETCHAT_SERVER }}
-        message: Job Failed !! There might be some expected to failure issues that has been closed !!!!
-        user: ${{ secrets.ROCKETCHAT_USER }}
-        password: ${{ secrets.ROCKETCHAT_PASSWORD }}
-        channel: Test-Channel
