@@ -17,27 +17,33 @@ const apiURL = {
 
 const mdFiles = getAllExpectedToFailureFiles(process.env.PATH_TO_EXPECTED_TO_FAILURE || './expectedToFailure')
 
-const checkExpectedToFailureFiles = new Promise(function(resolve, reject) {
-    let hasClosedIssue = false;
-    mdFiles.forEach((mdFile) => {
-        const ocisIssuesLink = getAllAvailableGithubIssueLinks(mdFile);
-        ocisIssuesLink.forEach(async (link) => {
-            const endPoint = link.replace(apiURL.commonEntryPoint,"")
-            const fullApiURL = apiURL.githubBaseApiURL + endPoint;
-            const state = await getIssueState(fullApiURL);
-            if (state === "closed") {
-                hasClosedIssue = true;
-                console.log('\x1b[0m', '\x1b[33m', 'Warning !!' +  ' This ocis issue ' + link + ' has been closed. Please Open it and Update Expected to failure File')
-            }
-        });
-    });
-    // dummy option
-    setTimeout(() => {
-        resolve(hasClosedIssue)
-    }, 5000)
-});
+let hasClosedIssue = false;
 
-checkExpectedToFailureFiles.then(async (value) => {
-    await notifyToRocketChat(process.env.ROCKETCHAT_SERVER_URL, process.env.ROCKETCHAT_ACCESS_TOKEN, process.env.ROCKETCHAT_USER_ID, value);
-})
+async function apiReq(fullApiURL, link) {
+    const state = await getIssueState(fullApiURL);
+    if (state === "closed") {
+        hasClosedIssue = true;
+        console.log('\x1b[0m', '\x1b[33m', 'Warning !!' +  ' This ocis issue ' + link + ' has been closed. Please Open it and Update Expected to failure File')
+    }
+}
+
+const checkExpectedToFailureFiles = async () => {
+    for (const mdFile of mdFiles){
+        const requests = []
+        const ocisIssuesLink = getAllAvailableGithubIssueLinks(mdFile);
+        ocisIssuesLink.forEach((link) => {
+            const endPoint = link.replace(apiURL.commonEntryPoint, "")
+            const fullApiURL = apiURL.githubBaseApiURL + endPoint;
+            requests.push(apiReq(fullApiURL, link))
+        });
+        await Promise.all(requests);
+    }
+}
+
+async function main (){
+    await checkExpectedToFailureFiles();
+    await notifyToRocketChat(hasClosedIssue);
+}
+
+main();
 

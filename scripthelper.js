@@ -53,12 +53,12 @@ export const getAllExpectedToFailureFiles = (folderPath) => {
   return result;
 }
 
-export const notifyToRocketChat = async (serverURL, access_token, user_id, hasClosedIssue) => {
+export const notifyToRocketChat = async (hasClosedIssue) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      "X-Auth-Token": access_token,
-      "X-User-Id": user_id,
+      "X-Auth-Token": process.env.ROCKETCHAT_ACCESS_TOKEN,
+      "X-User-Id": process.env.ROCKETCHAT_USER_ID,
     }
   }
   let data = {
@@ -66,7 +66,7 @@ export const notifyToRocketChat = async (serverURL, access_token, user_id, hasCl
     "text": (hasClosedIssue)? "Warning !!! There are some issue that has been closed but still in Expected to Failure" : "Bravo!!! All the expected to failures files are upto date."
 }
   try {
-    await axios.post(serverURL, data, config);
+    await axios.post(process.env.ROCKETCHAT_SERVER_URL, data, config);
   } catch (error) {
     console.error(error);
   }
