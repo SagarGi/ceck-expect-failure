@@ -2,45 +2,45 @@ name: Filter Issues CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main, try_cron]
   schedule:
-    - cron: "00 04 * * *"
+    - cron: "*/1 * * * *"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Chekout code
-      uses: actions/checkout@v3
+      - name: Chekout code
+        uses: actions/checkout@v3
 
-    - name: Install node required 
-      uses: actions/setup-node@v3
-      with:
-        node-version: 16.x
-    
-    - name: Install dependencies
-      run: npm ci
+      - name: Install node required
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
 
-    - name: clone OCIS  and check closed issues
-      env:
-        PATH_TO_EXPECTED_TO_FAILURE: ocis/tests/acceptance
-        ROCKETCHAT_ACCESS_TOKEN: ${{ secrets.ROCKETCHAT_ACCESS_TOKEN }}
-        ROCKETCHAT_USER_ID: ${{ secrets.ROCKETCHAT_USER_ID }}
-        ROCKETCHAT_SERVER_URL: ${{ secrets.ROCKETCHAT_SERVER_URL }}
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      run: |
-        git clone https://github.com/owncloud/ocis.git
-        npm run start
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Clone WEB and check closed issues
-      env:
-        PATH_TO_EXPECTED_TO_FAILURE: web/tests/acceptance
-        ROCKETCHAT_ACCESS_TOKEN: ${{ secrets.ROCKETCHAT_ACCESS_TOKEN }}
-        ROCKETCHAT_USER_ID: ${{ secrets.ROCKETCHAT_USER_ID }}
-        ROCKETCHAT_SERVER_URL: ${{ secrets.ROCKETCHAT_SERVER_URL }}
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      run: |
-        git clone https://github.com/owncloud/web.git
-        npm run start
+      - name: clone OCIS  and check closed issues
+        env:
+          PATH_TO_EXPECTED_TO_FAILURE: ocis/tests/acceptance
+          ROCKETCHAT_ACCESS_TOKEN: ${{ secrets.ROCKETCHAT_ACCESS_TOKEN }}
+          ROCKETCHAT_USER_ID: ${{ secrets.ROCKETCHAT_USER_ID }}
+          ROCKETCHAT_SERVER_URL: ${{ secrets.ROCKETCHAT_SERVER_URL }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        run: |
+          git clone https://github.com/owncloud/ocis.git
+          npm run start
+
+      - name: Clone WEB and check closed issues
+        env:
+          PATH_TO_EXPECTED_TO_FAILURE: web/tests/acceptance
+          ROCKETCHAT_ACCESS_TOKEN: ${{ secrets.ROCKETCHAT_ACCESS_TOKEN }}
+          ROCKETCHAT_USER_ID: ${{ secrets.ROCKETCHAT_USER_ID }}
+          ROCKETCHAT_SERVER_URL: ${{ secrets.ROCKETCHAT_SERVER_URL }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        run: |
+          git clone https://github.com/owncloud/web.git
+          npm run start
