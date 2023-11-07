@@ -1,4 +1,4 @@
-name: Filter Issues CI/CD
+name: Filter Issues CI/CD from try_cron branch
 
 on:
   push:
