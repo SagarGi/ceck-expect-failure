@@ -18,16 +18,16 @@ jobs:
          - try_cron
     steps:
       - name: checkout branch for schedule event
-        if: (github.event_name == 'schedule')
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ matrix.branch }}
-          
-      - name: checkout
         if: (github.event_name != 'schedule')
         uses: actions/checkout@v2
         with:
           ref: main
+          
+      - name: checkout
+        if: (github.event_name == 'schedule')
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.branch }}
           
       - name: Install node required
         uses: actions/setup-node@v3
