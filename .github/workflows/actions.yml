@@ -15,7 +15,7 @@ jobs:
       - name: Chekout code
         uses: actions/checkout@v3
         with: 
-          ref: ${{ github.event_name == 'schedule' && 'try_cron' || 'main' }}
+          ref: ${{ github.event_name == 'schedule' && 'try_cron, main' || 'main' }}
       - name: Install node required
         uses: actions/setup-node@v3
         with:
