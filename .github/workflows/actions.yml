@@ -27,7 +27,7 @@ jobs:
         if: (github.event_name != 'schedule')
         uses: actions/checkout@v2
         with:
-          ref: ${{ main }}
+          ref: main
           
       - name: Install node required
         uses: actions/setup-node@v3
