@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Chekout code
         uses: actions/checkout@v3
+        with:
+          ref: try_cron
 
       - name: Install node required
         uses: actions/setup-node@v3
