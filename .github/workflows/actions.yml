@@ -5,6 +5,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main, try_cron]
+  schedule:
+    - cron: "*/6 * * * *"
 
 jobs:
   build:
@@ -12,7 +14,7 @@ jobs:
     steps:
       - name: Chekout code
         uses: actions/checkout@v3
-
+        with: { ref: try_cron }
       - name: Install node required
         uses: actions/setup-node@v3
         with:
