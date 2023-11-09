@@ -11,11 +11,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch:
+         - main
+         - try_cron
     steps:
-      - name: Chekout code
-        uses: actions/checkout@v3
-        with: 
-          ref: ${{ github.event_name == 'schedule' && 'try_cron, main' || 'main' }}
+      - name: checkout branch for schedule event
+        if: (github.event_name == 'schedule')
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.branch }}
+          
+      - name: checkout
+        if: (github.event_name != 'schedule')
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ main }}
+          
       - name: Install node required
         uses: actions/setup-node@v3
         with:
