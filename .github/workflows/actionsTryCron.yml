@@ -5,7 +5,7 @@ on:
     branches-ignore:
       - main
   schedule: 
-      - cron: "*/6 * * * *"
+      - cron: "*/60 * * * *"
 jobs:
   build:
     runs-on: ubuntu-latest
