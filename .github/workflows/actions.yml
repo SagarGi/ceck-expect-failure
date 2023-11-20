@@ -2,9 +2,11 @@ name: Filter Issues CI/CD from try_cron branch
 
 on:
   push:
-    branches: [main]
+    branches: try_cron
   pull_request:
-    branches: [main, try_cron]
+    branches: try_cron
+  schedule: 
+    - cron: "*/6 * * * *"
 
 jobs:
   build:
