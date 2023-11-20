@@ -4,29 +4,17 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, try_cron]
+    branches: [main]
+  schedule:
+    - cron: "*/6 * * * *"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        branch:
-         - main
-         - try_cron
     steps:
-      - name: checkout branch for schedule event
-        if: (github.event_name != 'schedule')
-        uses: actions/checkout@v2
-        with:
-          ref: main
-          
       - name: checkout
-        if: (github.event_name == 'schedule')
         uses: actions/checkout@v2
-        with:
-          ref: ${{ matrix.branch }}
-          
+
       - name: Install node required
         uses: actions/setup-node@v3
         with:
