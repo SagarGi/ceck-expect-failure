@@ -36,4 +36,4 @@ jobs:
       - name: Any how this step should run
         if: always()
         run: |
-          curl -XPOST -d '{"msgtype": "m.text","body": "", "format": "org.matrix.custom.html","formatted_body": "<a href='https://github.com/nextcloud/integration_openproject/actions/runs/6936387432'>NC-Nightly(master)</a><br></br><b><i>Status: ${{ job.status }}</i></b>"}' "${{secrets.ELEMENT_BASE_URL}}/_matrix/client/r0/rooms/%21${{secrets.ELEMENT_ROOM_ID}}/send/m.room.message?access_token=${{secrets.ELEMENT_BOT_TOKEN}}"
+          curl -XPOST -d '{"msgtype": "m.text","body": "", "format": "org.matrix.custom.html","formatted_body": "<a href='https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"'>NC-Nightly(master)</a><br></br><b><i>Status: ${{ job.status }}</i></b>"}' "${{secrets.ELEMENT_BASE_URL}}/_matrix/client/r0/rooms/%21${{secrets.ELEMENT_ROOM_ID}}/send/m.room.message?access_token=${{secrets.ELEMENT_BOT_TOKEN}}"
