@@ -36,4 +36,4 @@ jobs:
       - name: Nightly Notify to Element Chat 
         if: always() && github.event_name == 'schedule'
         run: |
-          curl -XPOST -d '{"msgtype": "m.text","body": "", "format": "org.matrix.custom.html","formatted_body": "<a href='https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID'>CHECK-EXPECTED-NIGHTLY-(${{ github.ref }})</a><br></br><b><i>Status: ${{ job.status }}</i></b>"}' "${{secrets.ELEMENT_BASE_URL}}/_matrix/client/r0/rooms/%21${{secrets.ELEMENT_ROOM_ID}}/send/m.room.message?access_token=${{secrets.ELEMENT_BOT_TOKEN}}"
+          curl -XPOST -d '{"msgtype": "m.text","body": "", "format": "org.matrix.custom.html","formatted_body": "<a href='https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID'>CHECK-EXPECTED-NIGHTLY-(try_cron)</a><br></br><b><i>Status: ${{ job.status }}</i></b>"}' "${{secrets.ELEMENT_BASE_URL}}/_matrix/client/r0/rooms/%21${{secrets.ELEMENT_ROOM_ID}}/send/m.room.message?access_token=${{secrets.ELEMENT_BOT_TOKEN}}"
