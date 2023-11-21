@@ -4,8 +4,8 @@ on:
   push:
     branches-ignore:
       - main
-  schedule: 
-      - cron: "*/60 * * * *"
+  schedule:
+    - cron: "*/60 * * * *"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,3 +26,8 @@ jobs:
       - name: run hello.js
         run: |
           node ./hello.js
+
+      - name: Any how this step should run
+        if: always()
+        run: |
+          echo "This Step is running even if the build failed"
