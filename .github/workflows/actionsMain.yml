@@ -20,12 +20,18 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Install dependencies
+      - name: Install dependencies 1
         run: npm ci
 
       - name: run hello.js
         run: |
           node ./hello.js
+
+      - name: Install dependencies 2
+        run: npm ci
+
+      - name: Install dependencies 3
+        run: npm ci
 
       - name: Any how this step should run
         if: always()
