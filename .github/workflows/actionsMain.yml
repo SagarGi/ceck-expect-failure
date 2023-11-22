@@ -10,7 +10,7 @@ on:
 
 jobs:
   job1:
-    if: (github.event_name == 'schedule')
+    if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -36,7 +36,7 @@ jobs:
           node ./hello.js
 
   job2:
-    if: (github.event_name != 'schedule')
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     steps:
       - name: not scheduled
