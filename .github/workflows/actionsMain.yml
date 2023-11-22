@@ -4,15 +4,42 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+    branches: [main, try_cron]
   schedule:
-    - cron: "*/60 * * * *"
+    - cron: "*/6 * * * *"
 
 jobs:
-  build:
+  job1:
+    if: (github.event_name == 'schedule')
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch:
+          - main
+          - try_cron
+    steps:
+      - name: scheduled
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.branch }}
+
+      - name: Install node required
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: run hello.js
+        run: |
+          node ./hello.js
+
+  job2:
+    if: (github.event_name != 'schedule')
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: not scheduled
         uses: actions/checkout@v2
 
       - name: Install node required
@@ -20,20 +47,9 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Install dependencies 1
+      - name: Install dependencies
         run: npm ci
 
       - name: run hello.js
         run: |
           node ./hello.js
-
-      - name: Install dependencies 2
-        run: npm ci
-
-      - name: Install dependencies 3
-        run: npm ci
-
-      - name: Nightly Notify to Element Chat 
-        if: always() && github.event_name == 'schedule'
-        run: |
-          curl -XPOST -d '{"msgtype": "m.text","body": "", "format": "org.matrix.custom.html","formatted_body": "<a href='https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID'>CHECK-EXPECTED-NIGHTLY-(main)</a><br></br><b><i>Status: ${{ job.status }}</i></b>"}' "${{secrets.ELEMENT_BASE_URL}}/_matrix/client/r0/rooms/%21${{secrets.ELEMENT_ROOM_ID}}/send/m.room.message?access_token=${{secrets.ELEMENT_BOT_TOKEN}}"
