@@ -2,11 +2,6 @@ name: Shared Steps
 
 on:
   workflow_call:
-    inputs:
-      branch:
-        description: "Branch name"
-        required: true
-        type: string
 
 jobs:
   build:
