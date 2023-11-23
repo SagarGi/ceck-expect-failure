@@ -1,0 +1,12 @@
+name: Main Branch Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  main:
+    uses: ./.github/workflows/shared_steps.yml
+    with:
+      branch: main
