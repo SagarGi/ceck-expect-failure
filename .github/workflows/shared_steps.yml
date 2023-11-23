@@ -18,7 +18,7 @@ jobs:
 
       - name: Get branch name
         run: |
-          echo "Branch name: ${{ inputs.branch }}"
+          echo "Branch name from trigger: ${{ inputs.branch }}"
 
       - name: Install node required
         uses: actions/setup-node@v3
