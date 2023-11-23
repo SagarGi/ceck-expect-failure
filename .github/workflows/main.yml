@@ -1,4 +1,4 @@
-name: Main Branch Workflow
+name: Main Workflow
 
 on:
   push:
@@ -7,6 +7,6 @@ on:
 
 jobs:
   main:
-    uses: ./.github/workflows/shared_steps.yml
+    uses: ./.github/workflows/shared_steps.yml@main
     with:
       branch: main
