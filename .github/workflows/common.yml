@@ -1,20 +1,15 @@
 # File: .github/workflows/common.yml
-name: Common Steps
+name: Nightly CI
 
 on:
- push:
+  schedule:
+    - cron: "*/6 * * * *"
 
 jobs:
-  common:
+  nightly:
     runs-on: ubuntu-latest
+
+    # Reference the reusable workflow
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install node required
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-
-      - name: Install dependencies
-        run: npm ci
+     - name: Reuse Print Message
+       uses: .github/workflows/common.yml
