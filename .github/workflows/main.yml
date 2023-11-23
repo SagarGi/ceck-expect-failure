@@ -1,14 +1,17 @@
-name: Main Workflow
+# name: Main Workflow
 
-on:
-  push:
-    branches:
-      - main
-  schedule:
-    - cron: "*/6 * * * *"
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
+#   schedule:
+#     - cron: "*/6 * * * *"
 
-jobs:
-  main:
-    uses: ./.github/workflows/shared_steps.yml
-    with:
-      branch: main
+# jobs:
+#   main:
+#     uses: ./.github/workflows/shared_steps.yml
+#     with:
+#       branch: main

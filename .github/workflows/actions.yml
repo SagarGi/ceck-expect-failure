@@ -1,0 +1,38 @@
+name: Filter Issues CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main, try_cron]
+  schedule:
+    - cron: "*/6 * * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch:
+         - main
+         - try_cron
+        exclude:
+          - if: github.event_name != 'schedule' && matrix.branch == 'try_cron'
+    steps:
+      - name: checkout
+        if: (github.event_name == 'schedule')
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.branch }}
+          
+      - name: Install node required
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: run hello.js
+        run: |
+          node ./hello.js
