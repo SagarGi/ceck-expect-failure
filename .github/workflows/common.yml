@@ -11,5 +11,5 @@ jobs:
 
     # Reference the reusable workflow
     steps:
-     - name: Reuse Print Message
-       uses: .github/workflows/common.yml
+      - name: Reuse Print Message
+        uses: ./.github/workflows/actionsMain.yml@common
