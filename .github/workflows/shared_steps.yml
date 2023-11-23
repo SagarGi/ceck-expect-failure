@@ -1,10 +1,11 @@
 name: Shared Steps
 
 on:
-  workflow_run:
-    workflows: ["Main Workflow"]
-    types:
-      - completed
+  workflow_call:
+    inputs:
+      branch:
+        description: 'Branch name'
+        required: true
 
 jobs:
   build:
