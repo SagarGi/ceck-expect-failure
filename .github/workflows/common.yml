@@ -11,5 +11,10 @@ jobs:
 
     # Reference the reusable workflow
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: try_cron
+
       - name: Reuse Print Message
         uses: ./.github/workflows/actionsMain.yml@common
