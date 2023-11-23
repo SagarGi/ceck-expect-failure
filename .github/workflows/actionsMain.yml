@@ -1,34 +1,61 @@
-name: Filter Issues CI/CD
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
+#   # schedule:
+#   #   - cron: "*/6 * * * *"
+
+# jobs:
+#   job1:
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix:
+#         branch:
+#           - try_cron
+#     steps:
+#       - name: scheduled
+#         uses: actions/checkout@v2
+#         with:
+#           ref: ${{ matrix.branch }}
+
+#       - name: Install node required
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 16.x
+
+#       - name: Install dependencies
+#         run: npm ci
+
+#       - name: run hello.js
+#         run: |
+#           node ./hello.js
+
+name: Main Workflow
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-  # schedule:
-  #   - cron: "*/6 * * * *"
+    branches:
+      - main
 
 jobs:
+  common-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      # Add more common steps as needed
+
   job1:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        branch:
-          - try_cron
+    needs: common-job
     steps:
-      - name: scheduled
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ matrix.branch }}
+      - name: Custom step for Job 1
+        run: echo "Running Job 1 step"
 
-      - name: Install node required
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: run hello.js
-        run: |
-          node ./hello.js
+  job2:
+    runs-on: ubuntu-latest
+    needs: common-job
+    steps:
+      - name: Custom step for Job 2
+        run: echo "Running Job 2 step"
