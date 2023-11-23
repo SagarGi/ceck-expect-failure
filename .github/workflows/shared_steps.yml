@@ -2,19 +2,32 @@ name: Shared Steps
 
 on:
   workflow_call:
+    inputs:
+      branch:
+        type: string
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: checkout
         uses: actions/checkout@v2
+        with:
+          ref: ${{ inputs.branch }}
 
-      - name: Set up Node.js
+      - name: Get branch name
+        run: |
+          echo "Branch name: ${{ inputs.branch }}"
+
+      - name: Install node required
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: run hello.js
+        run: |
+          node ./hello.js
