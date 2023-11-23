@@ -1,0 +1,15 @@
+# main.yml
+name: Main Branch Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Jello
+        uses: ./.github/workflows/actionsMain.yml
