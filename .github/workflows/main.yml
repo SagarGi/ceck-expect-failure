@@ -7,6 +7,6 @@ on:
 
 jobs:
   main:
-    uses: ./.github/workflows/shared_steps.yml@main
+    uses: ./.github/workflows/shared_steps.yml
     with:
       branch: main
