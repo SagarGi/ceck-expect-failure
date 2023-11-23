@@ -2,8 +2,8 @@
 name: Nightly CI
 
 on:
-  schedule:
-    - cron: "*/6 * * * *"
+  push:
+    branches: [main]
 
 jobs:
   nightly:
