@@ -17,4 +17,4 @@ jobs:
           ref: try_cron
 
       - name: Reuse Print Message
-        uses: ./.github/workflows/actionsMain.yml@common
+        uses: .github/workflows/actionsMain.yml
