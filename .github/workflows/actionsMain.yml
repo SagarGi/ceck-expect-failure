@@ -1,54 +1,21 @@
+# File: .github/workflows/main.yml
 name: Filter Issues CI/CD
 
 on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, try_cron]
-  schedule:
-    - cron: "*/6 * * * *"
+    branches: [main]
+  # schedule:
+  #   - cron: "*/6 * * * *"
 
 jobs:
-  job1:
-    if: github.event_name == 'schedule'
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        branch:
-          - main
-          - try_cron
-    steps:
-      - name: scheduled
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ matrix.branch }}
-
-      - name: Install node required
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: run hello.js
-        run: |
-          node ./hello.js
-
-  job2:
+  main:
     if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     steps:
-      - name: not scheduled
-        uses: actions/checkout@v2
-
-      - name: Install node required
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-
-      - name: Install dependencies
-        run: npm ci
+      - name: Common steps
+        uses: ./.github/workflows/common.yml
 
       - name: run hello.js
         run: |
