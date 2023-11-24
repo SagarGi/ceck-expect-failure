@@ -1,11 +1,11 @@
-# name: Release Workflow
+name: Release Workflow
 
-# on:
-#   schedule:
-#     - cron: "*/6 * * * *"
+on:
+  schedule:
+    - cron: "*/6 * * * *"
 
-# jobs:
-#   try_cron:
-#     uses: ./.github/workflows/shared_steps.yml
-#     with:
-#       branch: try_cron
+jobs:
+  try_cron:
+    uses: ./.github/workflows/shared_steps.yml
+    with:
+      branch: try_cron
