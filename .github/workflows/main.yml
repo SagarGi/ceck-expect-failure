@@ -9,6 +9,11 @@ on:
       - main
   schedule:
     - cron: "*/6 * * * *"
+  workflow_run:
+    workflows:
+      - "Name of Your Workflow"
+    types:
+      - completed
 
 jobs:
   main:

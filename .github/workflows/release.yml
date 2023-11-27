@@ -2,7 +2,7 @@ name: Release Workflow
 
 on:
   schedule:
-    - cron: "*/6 * * * *"
+    - cron: "*/60 * * * *"
 
 jobs:
   try_cron:
