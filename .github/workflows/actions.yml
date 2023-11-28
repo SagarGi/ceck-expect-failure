@@ -1,0 +1,24 @@
+name: Filter Issues CI/CD from try_cron branch
+
+on:
+  push:
+    branches: try_cron
+  pull_request:
+    branches: try_cron
+  # schedule: 
+  #   - cron: "*/6 * * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chekout code
+        uses: actions/checkout@v3
+
+      - name: Install node required
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: Install dependencies
+        run: npm ci

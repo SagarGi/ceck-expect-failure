@@ -66,9 +66,21 @@ jobs:
     needs:
       - unit-test
       - api-test
-    if: always()
+    if: ${{ always() && github.event_name == 'schedule' }}
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
       - name: Step 2
-        run: |
-          echo "workflow run ID: ${{ github.run_id }}"
+        env:
+          E_ROOM_ID: ${{ secrets.E_ROOM_ID }}
+          U_TOKEN: ${{ secrets.U_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: SagarGi
+          REPO_NAME: ceck-expect-failure
+          RUN_ID: ${{ github.run_id }}
+          BRANCH_NAME: ${{ inputs.branch }}
+        run: ./.github/scripts/notify.sh

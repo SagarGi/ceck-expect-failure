@@ -7,16 +7,12 @@ on:
   pull_request:
     branches:
       - main
-  schedule:
-    - cron: "*/6 * * * *"
-  workflow_run:
-    workflows:
-      - "Name of Your Workflow"
-    types:
-      - completed
+  # schedule:
+  #   - cron: "*/6 * * * *"
 
 jobs:
   main:
     uses: ./.github/workflows/shared_steps.yml
+    secrets: inherit
     with:
       branch: main
