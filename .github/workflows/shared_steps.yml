@@ -14,10 +14,10 @@ jobs:
       matrix:
         node-version: [16, 18]
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: ${{ inputs.branch }}
+          ref: ${{ if(github.event_name == 'schedule') }}${{ inputs.branch }}${{ else }}${{ github.event.pull_request.head.ref }}${{ endif }}
 
       - name: Get branch name
         run: |
