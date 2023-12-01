@@ -35,12 +35,15 @@ fi
 
 
 send_message_to_room_response=$(curl -XPOST "$/_matrix/client/r0/rooms/%21$ELEMENT_ROOM_ID/send/m.room.message?access_token=$NIGHTLY_CI_USER_TOKEN" \
-                                      -d '{
-                                          "msgtype": "m.text",
-                                          "body": "",
-                                          "format": "org.matrix.custom.html",
-                                          "formatted_body": "<a href='https://github.com/$REPO_OWNER/$REPO_NAME/actions/runs/$RUN_ID'>NC-Nightly-'$BRANCH_NAME'</a><br></br><b><i>Status: '$workflow_status'</i></b>"
-                                          }')
+                                      -d '
+                                          {
+                                            "msgtype": "m.text",
+                                            "body": "",
+                                            "format": "org.matrix.custom.html",
+                                            "formatted_body": "<a href='https://github.com/$REPO_OWNER/$REPO_NAME/actions/runs/$RUN_ID'>NC-Nightly-'$BRANCH_NAME'</a><br></br><b><i>Status: '$workflow_status'</i></b>"
+                                          }
+                                        '
+                                      )
 
 if [[ "$send_message_to_room_response" != *"event_id"* ]]; then
   log_error "Failed to send message to element. Below response did not contain event_id!"
