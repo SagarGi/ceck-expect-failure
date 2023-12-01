@@ -13,7 +13,8 @@ log_success() {
   echo -e "\e[32m$1\e[0m"
 }
 
-response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+log_info "Fetching the all workflow jobs....."
+response=$(curl -H "Authorization: token $GITHUB_TOKEN" \
   "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/runs/$RUN_ID/jobs")
 
 
@@ -23,6 +24,7 @@ if [[ "$response" != *"jobs"* ]]; then
   exit 1
 fi
 
+log_info "Success!"
 jobs_informations=$(echo "$response" | jq '.jobs[:-1]')
 jobs_conclusions=$(echo "$jobs_informations" | jq -r '.[].conclusion')
 
@@ -32,7 +34,7 @@ if [[ " ${jobs_conclusions[*]} " == *"failure"* ]]; then
 fi
 
 
-
+log_info "Sending report to the element chat...."
 send_message_to_room_response=$(curl -XPOST "$ELEMENT_CHAT_URL/_matrix/client/r0/rooms/%21$ELEMENT_ROOM_ID/send/m.room.message?access_token=$NIGHTLY_CI_USER_TOKEN" \
                                       -d '
                                           {
