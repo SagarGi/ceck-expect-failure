@@ -14,10 +14,15 @@ jobs:
       matrix:
         node-version: [16, 18]
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
+      - name: Checkout for nightly CI
+        if: github.event_name == 'schedule'
+        uses: actions/checkout@v3
         with:
           ref: ${{ inputs.branch }}
+
+      - name: Checkout
+        if: github.event_name != 'schedule'
+        uses: actions/checkout@v3
 
       - name: Get branch name
         run: |
@@ -41,10 +46,15 @@ jobs:
       matrix:
         node-version: [16, 18]
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
+      - name: Checkout for nightly CI
+        if: github.event_name == 'schedule'
+        uses: actions/checkout@v3
         with:
           ref: ${{ inputs.branch }}
+
+      - name: Checkout
+        if: github.event_name != 'schedule'
+        uses: actions/checkout@v3
 
       - name: Get branch name
         run: |
