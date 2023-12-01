@@ -13,7 +13,6 @@ log_success() {
   echo -e "\e[32m$1\e[0m"
 }
 
-sudo apt-get install jq -y
 response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
   "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/runs/$RUN_ID/jobs")
 
