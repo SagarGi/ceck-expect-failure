@@ -14,7 +14,7 @@ log_success() {
 }
 
 log_info "Fetching the all workflow jobs....."
-response=$(curl -H "Authorization: token $GITHUB_TOKEN" \
+response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
   "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/runs/$RUN_ID/jobs")
 
 
@@ -35,7 +35,7 @@ fi
 
 
 log_info "Sending report to the element chat...."
-send_message_to_room_response=$(curl -XPOST "$ELEMENT_CHAT_URL/_matrix/client/r0/rooms/%21$ELEMENT_ROOM_ID/send/m.room.message?access_token=$NIGHTLY_CI_USER_TOKEN" \
+send_message_to_room_response=$(curl -s -XPOST "$ELEMENT_CHAT_URL/_matrix/client/r0/rooms/%21$ELEMENT_ROOM_ID/send/m.room.message?access_token=$NIGHTLY_CI_USER_TOKEN" \
                                       -d '
                                           {
                                             "msgtype": "m.text",
