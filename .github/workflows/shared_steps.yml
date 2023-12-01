@@ -76,7 +76,8 @@ jobs:
     needs:
       - unit-test
       - api-test
-    if: ${{ always() && github.event_name == 'schedule' }}
+    # if: ${{ always() && github.event_name == 'schedule' }}
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -89,8 +90,8 @@ jobs:
           E_ROOM_ID: ${{ secrets.E_ROOM_ID }}
           U_TOKEN: ${{ secrets.U_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO_OWNER: SagarGi
-          REPO_NAME: ceck-expect-failure
+          REPO_OWNER: ${{ github.actor }}
+          REPO_NAME: ${{ github.repository_basename }}
           RUN_ID: ${{ github.run_id }}
           BRANCH_NAME: ${{ inputs.branch }}
         run: ./.github/scripts/notify.sh
