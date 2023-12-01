@@ -34,7 +34,7 @@ fi
 
 
 
-send_message_to_room_response=$(curl -XPOST "$/_matrix/client/r0/rooms/%21$ELEMENT_ROOM_ID/send/m.room.message?access_token=$NIGHTLY_CI_USER_TOKEN" \
+send_message_to_room_response=$(curl -XPOST \
                                       -d '
                                           {
                                             "msgtype": "m.text",
@@ -42,7 +42,8 @@ send_message_to_room_response=$(curl -XPOST "$/_matrix/client/r0/rooms/%21$ELEME
                                             "format": "org.matrix.custom.html",
                                             "formatted_body": "<a href='https://github.com/$REPO_OWNER/$REPO_NAME/actions/runs/$RUN_ID'>NC-Nightly-'$BRANCH_NAME'</a><br></br><b><i>Status: '$workflow_status'</i></b>"
                                           }
-                                        '
+                                        ' \
+                                        "$/_matrix/client/r0/rooms/%21$ELEMENT_ROOM_ID/send/m.room.message?access_token=$NIGHTLY_CI_USER_TOKEN"
                                       )
 
 if [[ "$send_message_to_room_response" != *"event_id"* ]]; then
