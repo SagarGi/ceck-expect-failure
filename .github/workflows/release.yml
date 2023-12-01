@@ -1,8 +1,14 @@
 name: Release Workflow
 
 on:
+  push:
+    branches:
+      - try_cron
+  pull_request:
+    branches:
+      - try_cron
   schedule:
-    - cron: "*/6 * * * *"
+    - cron: "*/60 * * * *"
 
 jobs:
   try_cron:
