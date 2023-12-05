@@ -31,6 +31,10 @@ jobs_conclusions=$(echo "$jobs_informations" | jq -r '.[].conclusion')
 workflow_status="Success"
 if [[ " ${jobs_conclusions[*]} " == *"failure"* ]]; then
   workflow_status="Failure"
+elif [[ " ${jobs_conclusions[*]} " == *"cancelled"* ]]; then
+  workflow_status="Cancelled"
+elif [[ " ${jobs_conclusions[*]} " == *"skipped"* ]]; then
+  workflow_status="Kkipped"
 fi
 
 
