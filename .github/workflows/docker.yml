@@ -1,0 +1,21 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check Docker
+        run: docker version
+
+      - name: Check Docker compose
+        run: |
+          docker compose version
+          docker-compose version
