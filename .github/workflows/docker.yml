@@ -7,15 +7,27 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    services:
+      helloService:
+        image: hello-world:latest
+        options: --name hello-service
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Check Docker
+      - name: Checkout docker
+        uses: crazy-max/ghaction-setup-docker@v3
+
+      - name: check docker
         run: docker version
 
-      - name: Check Docker compose
+      - name: Install Compose
+        uses: ndeloof/install-compose-action@v0.0.1
+        with:
+          version: v2.1.0 # defaults to 'latest'
+          legacy: true # will also install in PATH as `docker-compose`
+      - name: Check version docker compose
         run: |
-          docker compose version
-          docker-compose version
+          docker ps -la
+          docker compose ps
