@@ -1,18 +1,18 @@
-# name: Release Workflow
+name: Release Workflow
 
-# on:
-#   push:
-#     branches:
-#       - try_cron
-#   pull_request:
-#     branches:
-#       - try_cron
-#   schedule:
-#     - cron: "*/60 * * * *"
+on:
+  push:
+    branches:
+      - try_cron
+  pull_request:
+    branches:
+      - try_cron
+  schedule:
+    - cron: "*/1 * * * *"
 
-# jobs:
-#   try_cron:
-#     uses: ./.github/workflows/shared_steps.yml
-#     secrets: inherit
-#     with:
-#       branch: try_cron
+jobs:
+  try_cron:
+    uses: ./.github/workflows/shared_steps.yml
+    secrets: inherit
+    with:
+      branch: try_cron

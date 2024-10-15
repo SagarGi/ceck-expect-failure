@@ -1,98 +1,116 @@
-# name: Shared Steps
+name: Shared Steps
 
-# on:
-#   workflow_call:
-#     inputs:
-#       branch:
-#         required: true
-#         type: string
+on:
+  workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
 
-# jobs:
-#   unit-test:
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         node-version: [16, 18]
-#     steps:
-#       - name: Checkout for nightly CI
-#         if: github.event_name == 'schedule'
-#         uses: actions/checkout@v3
-#         with:
-#           ref: ${{ inputs.branch }}
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16, 22]
+        php-version: [8.0, 8.1]
+        isReleaseBranch:
+          - false
+        
+        include:
+          - node-version: 18
+            php-version: 8.0
+          - node-version: 20
+            isReleaseBranch: 8.1
 
-#       - name: Checkout
-#         if: github.event_name != 'schedule'
-#         uses: actions/checkout@v3
+        exclude:
+          - isReleaseBranch: true
+            node-version: 22
+          - isReleaseBranch: false
+            node-version: 22
+            php-version: 8.0
 
-#       - name: Get branch name
-#         run: |
-#           echo "Branch name from trigger: ${{ inputs.branch }}"
+          
+    steps:
+      - name: Checkout for nightly CI
+        if: github.event_name == 'schedule'
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.branch }}
 
-#       - name: Install node required
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: ${{ matrix.node-version }}
+      - name: Checkout
+        if: github.event_name != 'schedule'
+        uses: actions/checkout@v3
 
-#       - name: Install dependencies
-#         run: npm ci
+      - name: Get branch name
+        run: |
+          echo "Branch name from trigger: ${{ inputs.branch }}"
 
-#       - name: run hello.js
-#         run: |
-#           node ./hello.js
+      - name: Install node required
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-#   api-test:
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         node-version: [16, 18]
-#     steps:
-#       - name: Checkout for nightly CI
-#         if: github.event_name == 'schedule'
-#         uses: actions/checkout@v3
-#         with:
-#           ref: ${{ inputs.branch }}
+      - name: Install dependencies
+        run: npm ci
 
-#       - name: Checkout
-#         if: github.event_name != 'schedule'
-#         uses: actions/checkout@v3
+      # - name: run hello.js
+      #   run: |
+      #     node ./hello.js
 
-#       - name: Get branch name
-#         run: |
-#           echo "Branch name from trigger: ${{ inputs.branch }}"
+  # api-test:
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node-version: [16, 18]
+  #   steps:
+  #     - name: Checkout for nightly CI
+  #       if: github.event_name == 'schedule'
+  #       uses: actions/checkout@v3
+  #       with:
+  #         ref: ${{ inputs.branch }}
 
-#       - name: Install node required
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: ${{ matrix.node-version }}
+  #     - name: Checkout
+  #       if: github.event_name != 'schedule'
+  #       uses: actions/checkout@v3
 
-#       - name: Install dependencies
-#         run: npm ci
+  #     - name: Get branch name
+  #       run: |
+  #         echo "Branch name from trigger: ${{ inputs.branch }}"
 
-#       - name: run hello.js
-#         run: |
-#           node ./hello.js
+  #     - name: Install node required
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
 
-#   notify:
-#     needs:
-#       - unit-test
-#       - api-test
-#     # if: ${{ always() && github.event_name == 'schedule' }}
-#     if: ${{ always() }}
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: checkout
-#         uses: actions/checkout@v2
-#         with:
-#           ref: main
+  #     - name: Install dependencies
+  #       run: npm ci
 
-#       - name: Step 2
-#         env:
-#           ELEMENT_CHAT_URL: ${{ secrets.ELEMENT_CHAT_URL }}
-#           ELEMENT_ROOM_ID: ${{ secrets.ELEMENT_ROOM_ID }}
-#           NIGHTLY_CI_USER_TOKEN: ${{ secrets.NIGHTLY_CI_USER_TOKEN }}
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#           REPO_OWNER: ${{ github.actor }}
-#           REPO_NAME: ${{ github.event.repository.name }}
-#           RUN_ID: ${{ github.run_id }}
-#           BRANCH_NAME: ${{ inputs.branch }}
-#         run: ./.github/scripts/notify.sh
+  #     - name: run hello.js
+  #       run: |
+  #         node ./hello.js
+
+  # notify:
+  #   needs:
+  #     - unit-test
+  #     - api-test
+  #   # if: ${{ always() && github.event_name == 'schedule' }}
+  #   if: ${{ always() }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: checkout
+  #       uses: actions/checkout@v2
+  #       with:
+  #         ref: main
+
+  #     - name: Step 2
+  #       env:
+  #         ELEMENT_CHAT_URL: ${{ secrets.ELEMENT_CHAT_URL }}
+  #         ELEMENT_ROOM_ID: ${{ secrets.ELEMENT_ROOM_ID }}
+  #         NIGHTLY_CI_USER_TOKEN: ${{ secrets.NIGHTLY_CI_USER_TOKEN }}
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         REPO_OWNER: ${{ github.actor }}
+  #         REPO_NAME: ${{ github.event.repository.name }}
+  #         RUN_ID: ${{ github.run_id }}
+  #         BRANCH_NAME: ${{ inputs.branch }}
+  #       run: ./.github/scripts/notify.sh
